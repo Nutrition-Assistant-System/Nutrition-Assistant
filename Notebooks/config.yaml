@@ -1,0 +1,313 @@
+# =====================================================================================================
+# Nutrition and Food Label Assistant: central configuration for Phase 2
+# Course brief (takes priority): "Team Project - Phase 2: Train a Small Model and Evaluate It".
+#
+# Used by the three self-contained Colab notebooks:
+#   01_base_model.ipynb  -> Model 1: base model, no training                         (scoreboard row 1)
+#   02_cpt.ipynb         -> Model 2: base + continued pretraining (exports train_cpt.py) (scoreboard row 2)
+#   03_sft.ipynb         -> Model 3: base + CPT + SFT (exports train_sft.py), then runs score.py on all
+#                           three models through ONE function and writes SCOREBOARD.md  (scoreboard row 3)
+#
+# RULES
+#  * Local open-weight models only: weights are downloaded from Hugging Face and run on the Colab GPU/CPU.
+#    No prompt or test question is ever sent to an external inference API.
+#  * No tokens in this file: only the NAMES of Colab Secrets are listed (see `credentials`).
+#  * Settings that must be identical for Base, CPT and SFT (test set, prompt, generation, scoring) are
+#    defined once here.
+# =====================================================================================================
+
+project:
+  name: nutrition-food-label-assistant
+  course_phase: 2
+  config_version: 2                      # bump when a change here can affect results; saved with every run
+  brief: "Team Project - Phase 2: Train a Small Model and Evaluate It"
+
+# ----------------------------------------------------------------------------------------------------
+# What to run
+# ----------------------------------------------------------------------------------------------------
+run:
+  # The ONE model that goes through Base -> CPT -> SFT and fills the three required scoreboard rows.
+  # The brief allows only gpt2-small (recommended) or smollm2-135m here.
+  pipeline_model: gpt2-small
+  # Optional extra BASE-ONLY comparisons (scored in notebook 1, reported as reference rows, never
+  # trained). Leave empty to run only what the brief requires.
+  baseline_references: []                # e.g. [smollm2-135m, qwen2.5-0.5b, smollm2-135m-instruct]
+  seed: 42                               # fixed seed for data splits, training and evaluation
+  run_name: null                         # null -> automatic "<stage>_<model_key>_<YYYYmmdd-HHMM>"
+  smoke_test:                            # brief tip: test small first (about 10 min on 5% of the data)
+    enabled: false                       # true = quick trial run; its results are NOT used in the report
+    data_fraction: 0.05
+    max_minutes: 10
+    test_questions: 5                    # first 5 questions only, for checking score.py
+
+# ----------------------------------------------------------------------------------------------------
+# Secrets: add them in Colab -> Secrets (key icon) under these exact names. Never commit values.
+# The same names go into .env.example in the repository (required by the brief).
+# ----------------------------------------------------------------------------------------------------
+credentials:
+  source_order: [colab_secrets, environment, prompt]   # prompt = hidden getpass() input, never saved
+  secrets:
+    huggingface: HF_TOKEN                # only for gated models or a private Hub repo for checkpoints
+    github: GITHUB_TOKEN                 # optional: only if the data repository is made private again
+
+# ----------------------------------------------------------------------------------------------------
+# Local runtime: Google Colab, NVIDIA T4 (16 GB). The T4 has no bfloat16 support: use float32 or float16.
+# ----------------------------------------------------------------------------------------------------
+runtime:
+  device: auto                           # cuda if available, else cpu
+  expected_gpu: Tesla T4
+  inference_dtype_default: float32       # small models: float32 is exact and fits easily
+  training_precision: fp16_mixed         # fp32 weights + fp16 autocast (Trainer fp16=True); no bf16 on T4
+  hf_cache_dir: null                     # null = default; set a Drive path to avoid re-downloading weights
+
+# ----------------------------------------------------------------------------------------------------
+# Models: local open-weight models only. Fields:
+#   model_id / revision   Hugging Face repository and pinned version ("main" = latest at run time;
+#                          the exact commit hash is recorded in every run's manifest)
+#   role                   pipeline_candidate = allowed by the brief for Base -> CPT -> SFT
+#                          baseline_reference = base-only comparison, never trained in this phase
+#   params_m               parameters, millions
+#   family                 base (plain-text model) | instruct (already chat-tuned)
+#   prompt_style           project_template = the project's <|user|>/<|assistant|> text template
+#                          native_chat = the model's own chat template (instruct models only)
+#   gated                  true = needs HF_TOKEN + accepting the licence on huggingface.co
+#   dtype                  weights dtype for inference on the T4
+#   max_context            tokens the model can read
+#   tokenizer_notes        what the notebooks must handle for this tokenizer
+#   train                  T4-safe training settings (pipeline candidates only)
+# ----------------------------------------------------------------------------------------------------
+models:
+  gpt2-small:                            # recommended by the brief
+    model_id: openai-community/gpt2
+    revision: main
+    role: pipeline_candidate
+    params_m: 124
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 1024
+    tokenizer_notes: "no pad token (use EOS); no chat template (add <|user|> <|assistant|> <|end|> as special tokens at SFT)"
+    train: {cpt_batch_size: 8, sft_batch_size: 8, grad_accum: 1, gradient_checkpointing: false}
+  smollm2-135m:                          # allowed by the brief as the alternative
+    model_id: HuggingFaceTB/SmolLM2-135M
+    revision: main
+    role: pipeline_candidate
+    params_m: 135
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 8192                    # CPT still uses 512-token blocks (brief)
+    tokenizer_notes: "49k vocabulary; set pad = EOS if missing; add the same 3 special tokens at SFT"
+    train: {cpt_batch_size: 8, sft_batch_size: 8, grad_accum: 1, gradient_checkpointing: false}
+  smollm2-360m:                          # same family, bigger: comparison only (brief limits the pipeline)
+    model_id: HuggingFaceTB/SmolLM2-360M
+    revision: main
+    role: baseline_reference
+    params_m: 362
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 8192
+    tokenizer_notes: "same tokenizer as smollm2-135m"
+  qwen2.5-0.5b:                          # different family, base model: comparison only
+    model_id: Qwen/Qwen2.5-0.5B
+    revision: main
+    role: baseline_reference
+    params_m: 494
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float16
+    max_context: 32768
+    tokenizer_notes: "151k vocabulary; different tokenizer from GPT-2"
+  smollm2-135m-instruct:                 # already instruction-tuned: shows what tuning at scale adds
+    model_id: HuggingFaceTB/SmolLM2-135M-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 135
+    family: instruct
+    prompt_style: native_chat
+    gated: false
+    dtype: float32
+    max_context: 8192
+    tokenizer_notes: "uses its own chat template; not comparable as a 'base' model"
+  qwen2.5-0.5b-instruct:
+    model_id: Qwen/Qwen2.5-0.5B-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 494
+    family: instruct
+    prompt_style: native_chat
+    gated: false
+    dtype: float16
+    max_context: 32768
+    tokenizer_notes: "uses its own chat template"
+  llama-3.2-1b-instruct:                 # gated; inference only on the T4
+    model_id: meta-llama/Llama-3.2-1B-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 1236
+    family: instruct
+    prompt_style: native_chat
+    gated: true
+    dtype: float16
+    max_context: 131072
+    tokenizer_notes: "uses its own chat template; needs HF_TOKEN and accepted licence"
+
+# ----------------------------------------------------------------------------------------------------
+# Prompting: one template for the whole pipeline (brief: "use the same template everywhere").
+#  * project_template is used by the base model, the CPT model and the SFT model, so all three see
+#    exactly the same prompt. The base model will not follow it (expected by the brief).
+#  * native_chat (instruct reference models only) wraps the same question in the model's own chat format.
+#    This difference is recorded in their results and they are reported as reference rows.
+# ----------------------------------------------------------------------------------------------------
+prompting:
+  # ONE format for Base, CPT and SFT, in training and in evaluation (brief: "add these as special
+  # tokens and use the same template everywhere"). Token review, 12 Nov 2026: approach B.
+  template: "<|user|> {question}\n<|assistant|>"
+  target: " {answer}<|end|>"             # SFT target; NO space before <|end|> (a space adds an extra "Ġ" token)
+  special_tokens: {user: "<|user|>", assistant: "<|assistant|>", end: "<|end|>"}
+  add_special_tokens_at: project_tokenizer   # added ONCE, before Model 1 is scored; never again
+  project_tokenizer:                     # what every checkpoint must carry (checked on every load)
+    base_vocab_size: 50257               # GPT-2: <|endoftext|> = 50256 is eos, bos and unk; no pad token
+    vocab_size: 50260
+    special_token_ids: {"<|user|>": 50257, "<|assistant|>": 50258, "<|end|>": 50259}
+    pad_token: "<|endoftext|>"           # padding is masked (attention 0, label -100), so EOS is safe
+    new_embedding_init: mean             # transformers default (mean + covariance of existing rows)
+    tied_lm_head: true                   # GPT-2 ties input and output embeddings; resize keeps the tie
+    saved_with_every_checkpoint: project_tokens.json
+  stop_token_ids_from: ["<|end|>", "<|endoftext|>"]  # generation_config.eos_token_id = [50256, 50259]
+  stop_strings: ["<|end|>", "<|user|>", "<|assistant|>", "<|endoftext|>"]  # text cut after decoding
+  tokenize_with_add_special_tokens: false    # nothing is prepended or appended by the tokenizer
+  system_prompt: null                    # none: identical input for every model
+
+# ----------------------------------------------------------------------------------------------------
+# Generation: identical for Base, CPT and SFT (brief: greedy decoding, same maximum answer length).
+# ----------------------------------------------------------------------------------------------------
+generation:
+  do_sample: false                       # greedy = temperature 0
+  max_new_tokens: 96                     # same maximum answer length for every model
+  repetition_penalty: 1.0                # no penalty: keeps "does not stop / repeats itself" visible
+  batch_size: 1                          # one question at a time: clean per-question latency
+  latency: wall_clock_seconds_per_answer # reported as "Avg. latency (s)" on the scoreboard
+
+# ----------------------------------------------------------------------------------------------------
+# Test set: the 30 Phase 1 questions. The repository keeps tests/test_questions.csv (required by the
+# brief); every notebook also embeds the same 30 rows and checks this fingerprint before scoring.
+# ----------------------------------------------------------------------------------------------------
+test_set:
+  repo_path: tests/test_questions.csv
+  n_questions: 30
+  fingerprint:                           # sha256 of the JSON list of [id, question, expected_answer]
+    method: sha256_json_id_question_expected
+    value: 0ab302fef36a194853886f6b82e0177d3881a4c4ad122fc9c5d2a343fba769de
+  columns: [id, question, expected_answer, source, difficulty, key_answer, should_decline, scoring]
+  difficulty_mix: {easy: 15, medium: 10, hard: 2, refusal: 3}
+  scoring_mix: {key_match: 18, decline: 4, manual: 8}
+  change_policy: "fix clear mistakes only, note each change in the decision log, re-score every model"
+
+# ----------------------------------------------------------------------------------------------------
+# Evaluation: the project method, applied identically to every model.
+# ----------------------------------------------------------------------------------------------------
+evaluation:
+  short_answers:                         # 18 questions with a short exact answer (a number, yes/no)
+    method: exact_match_on_key_value     # see note (needs team approval): normalise, then the key value
+    normalize: [lowercase, collapse_spaces, remove_thousands_separator]   # must appear in the answer
+    accept_alternatives: true            # key_answer "49.93|49.9" -> either counts
+    declined_answer_scores: 0
+  should_decline:                        # 4 questions: 3 out of scope + 1 unanswerable (brief definition)
+    correct_if_declines: true
+    patterns:
+      - "i don'?t have (that|this|the) information"
+      - "i can'?t help|i cannot help|i'?m not able to"
+      - "not in my (nutrition )?data|outside what i do|out of scope"
+      - "ask a (doctor|registered dietitian)|consult|i don'?t know"
+  manual:                                # 8 longer answers: graded by hand
+    graders: 2                           # two team members, independently
+    scale: {correct: 1.0, partly_correct: 0.5, wrong: 0.0}
+    checklist: [factual_accuracy, numerical_accuracy, answer_relevance, groundedness, refusal_accuracy,
+                units_and_serving_sizes]  # Phase 1 criteria, used by graders as a checklist
+    pending_until: both_graders_done     # a pending grade is NEVER counted as 0 or as wrong
+    agreement: exact_match_of_the_two_scores   # "how often the graders agreed at first"
+    resolution: discuss_then_final_score
+  score_sources: [auto, human]           # every row records which one produced its final score
+  metrics:
+    accuracy: "mean final score over all 30; reported only when no grade is pending"
+    accuracy_provisional: "auto-scored questions only (22), clearly labelled; never mixed with final"
+    refusal_accuracy: "declined / should-decline questions (4)"
+    breakdowns: [by_difficulty, by_scoring_type]
+    mean_latency_s: true
+    heldout_perplexity: "computed in notebook 2 for the base model (before) and CPT model (after); notebook 3 adds the SFT model"
+    perplexity_vocab: original           # softmax over the first 50,257 logits only, so adding the 3 tokens
+                                         # cannot change it; same blocks, same text, dropout off, for every model
+  error_analysis:                        # required for the SFT model: every wrong answer gets one cause
+    applies_to: sft
+    categories: [format_failure, hallucination, knowledge_missing, refusal_error, test_case_problem]
+
+# ----------------------------------------------------------------------------------------------------
+# Results and checkpoints: Google Drive (checkpoints never go into Git).
+# ----------------------------------------------------------------------------------------------------
+paths:
+  drive_root: /content/drive/MyDrive/nutrition-assistant
+  local_fallback_root: /content/nutrition-assistant     # if Drive is not mounted (lost at session end)
+  results_dir: "{root}/results/{stage}/{model_key}/{run_name}"
+  checkpoints_dir: "{root}/checkpoints/{model_key}"     # cpt/epoch-N, cpt/best, sft/epoch-N, sft/best
+  repo_exports_dir: "{root}/repo_exports"               # files to commit: scripts, results, SCOREBOARD.md
+  hf_hub_repo: null                      # optional private Hub repo for checkpoints, e.g. team/nutrition-gpt2
+
+scoreboard:
+  file: SCOREBOARD.md
+  columns: [Version, Held-out perplexity, Accuracy, Refusal accuracy, Avg. latency (s), Notes]
+  required_rows: ["Small model, base", "+ continued pretraining", "+ SFT"]
+  reference_rows_label: "Reference (base only, not trained)"
+
+# ----------------------------------------------------------------------------------------------------
+# Data for the training stages, read directly from the project GitHub repository (no uploads).
+# ----------------------------------------------------------------------------------------------------
+data_sources:
+  base_url: https://raw.githubusercontent.com/Nutrition-Assistant-System/Nutrition-Assistant/main
+  private_repo: false                    # public since 12 Nov 2026; GITHUB_TOKEN no longer needed
+  merged_items: Data/foods_and_products.csv
+  cpt_train: Data/CPT/train.txt          # 889 documents (90%)
+  cpt_heldout: Data/CPT/heldout.txt      # 99 documents (10%), split by document
+  sft_pairs: Data/SFT/sft_pairs.jsonl    # 894 pairs; none from test items
+  test_questions: Data/test_questions.csv
+
+# ----------------------------------------------------------------------------------------------------
+# Training stages (values from the brief). Batch sizes per model are in models.<key>.train.
+# ----------------------------------------------------------------------------------------------------
+stages:
+  base: {}                               # Model 1: no training
+  cpt:                                   # Model 2: brief Part A, Step 1
+    start_from: base_project             # base checkpoint saved by notebook 1 (with the 3 tokens added)
+    block_size: 512                      # sequences of 512 tokens
+    collator: cpt_collate                # no padding; keeps EOS labels (NOT DataCollatorForLanguageModeling)
+    epochs: 3                            # 1-3 passes
+    learning_rate: 5.0e-5                # around 5e-5
+    warmup_ratio: 0.05
+    weight_decay: 0.01
+    save_every_epoch: true               # a checkpoint after each pass
+    early_stopping_patience: 1           # stop when validation loss stops falling
+    keep_best_by: eval_loss
+    eval_prompts:                        # the same 5 prompts, completed before and after
+      - "Chicken breast, cooked, roasted. Per 100 g:"
+      - "Lentils, mature seeds, cooked, boiled. Per 100 g it contains"
+      - "Ingredients: whole grain oats, sugar,"
+      - "Breakfast cereal. Serving size: 30 g. Per 100 g:"
+      - "Greek yogurt, plain, nonfat. Per 100 g:"
+  sft:                                   # Model 3: brief Part A, Step 2
+    start_from: cpt_best                 # best CPT checkpoint of the SAME model
+    method: full_fine_tuning             # full fine-tuning is fine at this size (LoRA optional)
+    max_length: 384
+    epochs: 3                            # 2-3 passes
+    learning_rate: 5.0e-5
+    warmup_ratio: 0.05
+    weight_decay: 0.01
+    val_fraction: 0.10                   # keep 10% of the pairs for validation
+    early_stopping_patience: 1
+    loss_on_answers_only: true           # prompt tokens get label -100
+    add_special_tokens: false            # already in the project tokenizer (prompting)
+    on_too_long: error                   # never truncate; longest pair is 94 tokens
