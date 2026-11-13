@@ -1,0 +1,52 @@
+{
+  "model_key": "gpt2-small",
+  "model_id": "openai-community/gpt2",
+  "smoke_test": false,
+  "run_name": "cpt_gpt2-small_20261112-2036",
+  "train": {
+    "documents": 889,
+    "tokens": 164854,
+    "blocks": 321,
+    "tokens_used": 164352,
+    "tokens_dropped_at_end": 502
+  },
+  "heldout": {
+    "documents": 99,
+    "tokens": 17357,
+    "blocks": 33,
+    "tokens_used": 16896,
+    "tokens_dropped_at_end": 461
+  },
+  "block_size": 512,
+  "learning_rate": 5e-05,
+  "batch_size": 8,
+  "epochs_planned": 3,
+  "epochs_run": 3,
+  "stopped_early": false,
+  "best_epoch": 3,
+  "eval_by_epoch": [
+    {
+      "epoch": 0.0,
+      "eval_loss": 2.6825002423598447,
+      "perplexity": 14.62160518923234
+    },
+    {
+      "epoch": 1.0,
+      "eval_loss": 1.853594422340393,
+      "perplexity": 6.382720533270417
+    },
+    {
+      "epoch": 2.0,
+      "eval_loss": 1.7381020784378052,
+      "perplexity": 5.686540566472483
+    },
+    {
+      "epoch": 3.0,
+      "eval_loss": 1.7133426666259766,
+      "perplexity": 5.5474738757820825
+    }
+  ],
+  "heldout_perplexity_before": 14.62160518923234,
+  "heldout_perplexity_after": 5.547210755849679,
+  "perplexity_method": "exp(mean next-token loss) on the held-out 512-token blocks, softmax over the first 50257 logits, dropout off; identical for every model"
+}

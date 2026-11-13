@@ -1,0 +1,14 @@
+{
+  "config_version": 2,
+  "seed": 42,
+  "date": "20261112-2036",
+  "model_commit": null,
+  "data_train_source": "https://raw.githubusercontent.com/Nutrition-Assistant-System/Nutrition-Assistant/main/Data/CPT/train.txt",
+  "data_heldout_source": "https://raw.githubusercontent.com/Nutrition-Assistant-System/Nutrition-Assistant/main/Data/CPT/heldout.txt",
+  "train_sha256": "b8041b47585ead28aad09fe4c1fbe8e1f0412322d29d8c9ad88fe604b829eda1",
+  "heldout_sha256": "b230911e033e75048cdb2f43bffccfcedfc25914ffdb7845eace124a775063c6",
+  "torch": "2.14.1+cu130",
+  "transformers": "5.22.1",
+  "python": "3.13.16",
+  "gpu": "Tesla T4"
+}
