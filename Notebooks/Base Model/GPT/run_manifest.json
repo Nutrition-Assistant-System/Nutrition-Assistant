@@ -1,0 +1,42 @@
+{
+  "notebook": "01_base_model",
+  "run_name": "base_gpt2-small_20261113-1307",
+  "mode": "full",
+  "finished": "2026-11-13T13:09:25.426583",
+  "model_key": "gpt2-small",
+  "model_id": "openai-community/gpt2",
+  "model_commit": null,
+  "checkpoint": "/content/drive/MyDrive/nutrition-assistant/checkpoints/gpt2-small/base_project",
+  "config_source": "embedded copy in this notebook",
+  "config_version": 2,
+  "sha256": {
+    "prompting_tokens.py": "5a56e1c5abd9e8b7b454076cf91737f5bb852c46b949127a94250e1842fc7dca",
+    "scoring.py": "b79a0370c8d215323232271e23f5c7fb11c3e0098eb1328c1ed6cd8697fb852c",
+    "heldout.txt": "b230911e033e75048cdb2f43bffccfcedfc25914ffdb7845eace124a775063c6",
+    "test_questions.csv": "a36bc4a456e2bb8c13ada4d2865c354345ee403b3f51fa082ffccebad74e166d"
+  },
+  "test_fingerprint": "0ab302fef36a194853886f6b82e0177d3881a4c4ad122fc9c5d2a343fba769de",
+  "project_tokens": {
+    "special_token_ids": {
+      "<|user|>": 50257,
+      "<|assistant|>": 50258,
+      "<|end|>": 50259
+    },
+    "vocab_size": 50260,
+    "base_vocab_size": 50257,
+    "eos_token_id": 50256,
+    "pad_token_id": 50256,
+    "stop_token_ids": [
+      50256,
+      50259
+    ]
+  },
+  "seed": 42,
+  "environment": {
+    "env": "colab",
+    "gpu": "Tesla T4",
+    "torch": "2.14.1+cu130",
+    "transformers": "5.22.1",
+    "python": "3.13.16"
+  }
+}

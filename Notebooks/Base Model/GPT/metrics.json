@@ -1,0 +1,23 @@
+{
+  "n_questions": 30,
+  "n_pending_manual": 8,
+  "accuracy": null,
+  "accuracy_provisional_auto_only": 0.0,
+  "n_auto_scored": 22,
+  "refusal_accuracy": 0.0,
+  "mean_latency_s": 1.069,
+  "by_difficulty_auto": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "refusal": 0.0
+  },
+  "by_scoring_type_auto": {
+    "decline": 0.0,
+    "key_match": 0.0
+  },
+  "heldout_perplexity": 12.294,
+  "heldout_perplexity_plain_gpt2": 12.294,
+  "perplexity_vocab": "original 50,257 tokens",
+  "answers_stopped_at_stop_token": 0,
+  "mean_new_tokens": 96.0
+}
