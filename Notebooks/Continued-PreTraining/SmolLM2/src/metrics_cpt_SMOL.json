@@ -1,0 +1,25 @@
+{
+  "version": "+ continued pretraining",
+  "n_questions": 30,
+  "n_pending_manual": 8,
+  "accuracy": null,
+  "accuracy_provisional_auto_only": 0.0,
+  "n_auto_scored": 22,
+  "refusal_accuracy": 0.0,
+  "mean_latency_s": 2.222,
+  "by_difficulty_auto": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "refusal": 0.0
+  },
+  "by_scoring_type_auto": {
+    "decline": 0.0,
+    "key_match": 0.0
+  },
+  "heldout_perplexity": 3.507,
+  "heldout_perplexity_base_same_method": 6.998,
+  "perplexity_vocab": "original 49,152 tokens",
+  "answers_stopped_at_stop_token": 14,
+  "mean_new_tokens": 70.8,
+  "run_name": "cpt_smollm2-135m_20261113-1434"
+}
