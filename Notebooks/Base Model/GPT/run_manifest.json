@@ -1,0 +1,67 @@
+{
+  "notebook": "01_base_model_smollm2",
+  "run_name": "base_smollm2-135m_20261113-1325",
+  "mode": "full",
+  "finished": "2026-11-13T13:27:20.198837",
+  "model_key": "smollm2-135m",
+  "model_id": "HuggingFaceTB/SmolLM2-135M",
+  "model_commit": null,
+  "checkpoint": "/content/drive/MyDrive/nutrition-assistant/checkpoints/smollm2-135m/base_project",
+  "config_source": "GitHub: https://raw.githubusercontent.com/Nutrition-Assistant-System/Nutrition-Assistant/main/Notebooks/config_smollm2.yaml",
+  "config_sha256": "395eda4b751731e93290802dd1d8b60a2290e605839544cb57d5016b5a2979ae",
+  "config_version": 2,
+  "sha256": {
+    "prompting_tokens.py": "c0b7aa51c60e8d89feb662a64366737adeb18825e74b751d0cae4f4610ca9734",
+    "scoring.py": "6491d2fc35c2a1d3d35caab30159d4f0cbf739bc23a37f5187645b5339911493",
+    "heldout.txt": "b230911e033e75048cdb2f43bffccfcedfc25914ffdb7845eace124a775063c6",
+    "test_questions.csv": "a36bc4a456e2bb8c13ada4d2865c354345ee403b3f51fa082ffccebad74e166d"
+  },
+  "test_fingerprint": "0ab302fef36a194853886f6b82e0177d3881a4c4ad122fc9c5d2a343fba769de",
+  "project_tokens": {
+    "special_token_ids": {
+      "<|user|>": 49152,
+      "<|assistant|>": 49153,
+      "<|end|>": 49154
+    },
+    "vocab_size": 49155,
+    "base_vocab_size": 49152,
+    "eos_token_id": 0,
+    "pad_token_id": 0,
+    "stop_token_ids": [
+      0,
+      49154
+    ]
+  },
+  "seed": 42,
+  "tokenizer_inspection": {
+    "class": "GPT2Tokenizer",
+    "existing_special_tokens": {
+      "<|endoftext|>": 0,
+      "<|im_start|>": 1,
+      "<|im_end|>": 2,
+      "<repo_name>": 3,
+      "<reponame>": 4,
+      "<file_sep>": 5,
+      "<filename>": 6,
+      "<gh_stars>": 7,
+      "<issue_start>": 8,
+      "<issue_comment>": 9,
+      "<issue_closed>": 10,
+      "<jupyter_start>": 11,
+      "<jupyter_text>": 12,
+      "<jupyter_code>": 13,
+      "<jupyter_output>": 14,
+      "<jupyter_script>": 15,
+      "<empty_output>": 16
+    },
+    "adds_special_tokens_by_default": false,
+    "stored_dtype": "torch.bfloat16"
+  },
+  "environment": {
+    "env": "colab",
+    "gpu": "Tesla T4",
+    "torch": "2.14.1+cu130",
+    "transformers": "5.22.1",
+    "python": "3.13.16"
+  }
+}
