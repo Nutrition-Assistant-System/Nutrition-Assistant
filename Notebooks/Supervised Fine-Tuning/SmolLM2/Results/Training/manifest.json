@@ -1,0 +1,42 @@
+{
+  "start_checkpoint": "cpt_best",
+  "start_path": "/content/drive/MyDrive/nutrition-assistant (2)/checkpoints/smollm2-135m/cpt_from_base_project/best",
+  "start_sha256": {
+    "model.safetensors": "7043033ecc3991c57e01fbd11b2c84074136bde334ce775ae5d188e845490fc6"
+  },
+  "base_project_sha256": "ac6759352133ac35ecfca481c3ab06335f802c1ab9a6854a7da6a5bd6aacefa0",
+  "cpt_lineage": {
+    "start_checkpoint": "base_project",
+    "start_path": "/content/drive/MyDrive/base_project/checkpoints/smollm2-135m/base_project",
+    "start_sha256": {
+      "config.json": "d8e9d89d27e86e596fe59ec4ffc4d9aea1e736303493a8cd70f8388184ef7724",
+      "model.safetensors": "ac6759352133ac35ecfca481c3ab06335f802c1ab9a6854a7da6a5bd6aacefa0",
+      "tokenizer.json": "f87f7703f1f3e5c9bf40401c6c96d84961dfcd922ea618314a42a106cc08329d",
+      "tokenizer_config.json": "eeb7bd404ec585e3b6de823dccdf2699b97c9e6ba650a3369573f417b565cedc",
+      "project_tokens.json": "55ebcf736a3af679a9ff988beec62a9c6b5204e6af759eb81d6f54b01d6e7174"
+    },
+    "start_project_tokens": {
+      "special_token_ids": {
+        "<|user|>": 49152,
+        "<|assistant|>": 49153,
+        "<|end|>": 49154
+      },
+      "vocab_size": 49155,
+      "base_vocab_size": 49152,
+      "eos_token_id": 0,
+      "pad_token_id": 0,
+      "stop_token_ids": [
+        0,
+        49154
+      ]
+    }
+  },
+  "date": "20261113-1500",
+  "seed": 42,
+  "config_version": 2,
+  "sft_pairs_sha256": "5ae33fef723b5d99c68c3245523def570f388e0be097958bb4183aac0996690a",
+  "torch": "2.14.1+cu130",
+  "transformers": "5.22.1",
+  "python": "3.13.16",
+  "gpu": "Tesla T4"
+}

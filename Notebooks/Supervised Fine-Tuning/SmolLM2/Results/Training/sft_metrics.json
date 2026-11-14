@@ -1,0 +1,36 @@
+{
+  "model_key": "smollm2-135m",
+  "run_name": "sft_smollm2-135m_20261113-1500",
+  "smoke_test": false,
+  "checkpoint_dir": "/content/drive/MyDrive/nutrition-smollm2/checkpoints/smollm2-135m/sft",
+  "n_train": 806,
+  "n_val": 88,
+  "max_tokens_per_example": 108,
+  "learning_rate": 5e-05,
+  "batch_size": 8,
+  "epochs_planned": 3,
+  "epochs_run": 3,
+  "best_epoch": 3,
+  "stopped_early": false,
+  "eval_by_epoch": [
+    {
+      "epoch": 0.0,
+      "eval_loss": 2.304051399230957
+    },
+    {
+      "epoch": 1.0,
+      "eval_loss": 0.5604841709136963
+    },
+    {
+      "epoch": 2.0,
+      "eval_loss": 0.38447606563568115
+    },
+    {
+      "epoch": 3.0,
+      "eval_loss": 0.3533199727535248
+    }
+  ],
+  "heldout_perplexity": 4.553786740271547,
+  "val_samples_stopped_at_end": 8,
+  "val_samples": 8
+}
