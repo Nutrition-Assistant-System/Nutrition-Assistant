@@ -1,0 +1,160 @@
+{
+  "rows": 988,
+  "by_source": {
+    "Open Food Facts": 780,
+    "USDA FoodData Central (SR Legacy, April 2018)": 208
+  },
+  "by_basis": {
+    "per 100 g": 858,
+    "per 100 ml": 130
+  },
+  "by_category": [
+    {
+      "item_type": "generic food",
+      "project_category": "Eggs and dairy",
+      "n": 26
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Fish and seafood",
+      "n": 20
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Fruit",
+      "n": 28
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Grains and bread",
+      "n": 26
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Legumes",
+      "n": 24
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Meat and poultry",
+      "n": 29
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Nuts, seeds and oils",
+      "n": 20
+    },
+    {
+      "item_type": "generic food",
+      "project_category": "Vegetables",
+      "n": 35
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Biscuits and salty snacks",
+      "n": 130
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Bread",
+      "n": 130
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Breakfast cereals",
+      "n": 130
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Chocolate",
+      "n": 130
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Soft drinks and juices",
+      "n": 130
+    },
+    {
+      "item_type": "packaged product",
+      "project_category": "Yogurts",
+      "n": 130
+    }
+  ],
+  "columns": [
+    "item_id",
+    "source",
+    "source_id",
+    "item_type",
+    "name",
+    "full_name",
+    "brand",
+    "project_category",
+    "form",
+    "basis",
+    "energy_kcal",
+    "protein_g",
+    "fat_g",
+    "saturated_fat_g",
+    "carbohydrate_g",
+    "carbohydrate_definition",
+    "sugars_g",
+    "fiber_g",
+    "sodium_mg",
+    "salt_g",
+    "cholesterol_mg",
+    "calcium_mg",
+    "iron_mg",
+    "potassium_mg",
+    "water_g",
+    "ingredients_text",
+    "allergens_tags",
+    "traces_tags",
+    "serving_size",
+    "serving_quantity",
+    "household_measures",
+    "not_reported",
+    "quality_flags",
+    "source_url",
+    "licence"
+  ],
+  "unit_conversions": {
+    "sodium_mg (Open Food Facts rows)": "published sodium in g x 1000"
+  },
+  "filled_share": {
+    "item_id": 1.0,
+    "source": 1.0,
+    "source_id": 1.0,
+    "item_type": 1.0,
+    "name": 1.0,
+    "full_name": 1.0,
+    "brand": 0.789,
+    "project_category": 1.0,
+    "form": 1.0,
+    "basis": 1.0,
+    "energy_kcal": 1.0,
+    "protein_g": 1.0,
+    "fat_g": 1.0,
+    "saturated_fat_g": 0.999,
+    "carbohydrate_g": 1.0,
+    "carbohydrate_definition": 1.0,
+    "sugars_g": 0.989,
+    "fiber_g": 0.994,
+    "sodium_mg": 1.0,
+    "salt_g": 0.789,
+    "cholesterol_mg": 0.207,
+    "calcium_mg": 0.211,
+    "iron_mg": 0.211,
+    "potassium_mg": 0.211,
+    "water_g": 0.211,
+    "ingredients_text": 0.789,
+    "allergens_tags": 0.665,
+    "traces_tags": 0.321,
+    "serving_size": 0.787,
+    "serving_quantity": 0.787,
+    "household_measures": 0.21,
+    "not_reported": 0.497,
+    "quality_flags": 0.022,
+    "source_url": 1.0,
+    "licence": 1.0
+  }
+}

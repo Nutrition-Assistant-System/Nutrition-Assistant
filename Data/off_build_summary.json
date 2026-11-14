@@ -1,0 +1,175 @@
+{
+  "foods": 208,
+  "foods_per_category": {
+    "Eggs and dairy": 26,
+    "Fish and seafood": 20,
+    "Fruit": 28,
+    "Grains and bread": 26,
+    "Legumes": 24,
+    "Meat and poultry": 29,
+    "Nuts, seeds and oils": 20,
+    "Vegetables": 35
+  },
+  "forms": {
+    "raw": 93,
+    "cooked": 60,
+    "processed": 36,
+    "dried": 12,
+    "canned": 7
+  },
+  "long_rows": 21667,
+  "distinct_nutrients_long": 149,
+  "portion_rows": 635,
+  "foods_without_portions": [
+    "Greek yogurt, plain, whole milk (processed)"
+  ],
+  "missing_per_core_nutrient": {
+    "energy_kcal": 0,
+    "protein_g": 0,
+    "total_fat_g": 0,
+    "saturated_fat_g": 1,
+    "carbohydrate_g": 0,
+    "total_sugars_g": 11,
+    "fiber_g": 2,
+    "sodium_mg": 0,
+    "cholesterol_mg": 3,
+    "calcium_mg": 0,
+    "iron_mg": 0,
+    "potassium_mg": 0,
+    "water_g": 0
+  },
+  "foods_with_any_missing_core": 14,
+  "flag_counts": {
+    "energy_vs": 14,
+    "sugars_gt_carbohydrate": 6,
+    "proximates_sum": 1
+  },
+  "flagged_foods": [
+    {
+      "fdc_id": 171304,
+      "common_name": "Greek yogurt, plain, whole milk",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 170859,
+      "common_name": "Heavy cream",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 170872,
+      "common_name": "Milk, low fat (1%)",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 171267,
+      "common_name": "Milk, reduced fat (2%)",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 171269,
+      "common_name": "Milk, skim (nonfat)",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 171265,
+      "common_name": "Milk, whole (3.25% fat)",
+      "form": "processed",
+      "quality_flags": "sugars_gt_carbohydrate"
+    },
+    {
+      "fdc_id": 175120,
+      "common_name": "Atlantic mackerel",
+      "form": "cooked",
+      "quality_flags": "proximates_sum_96.5g"
+    },
+    {
+      "fdc_id": 167747,
+      "common_name": "Lemon juice",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+42%"
+    },
+    {
+      "fdc_id": 169967,
+      "common_name": "Broccoli",
+      "form": "cooked",
+      "quality_flags": "energy_vs_4-4-9_gap_+20%"
+    },
+    {
+      "fdc_id": 170379,
+      "common_name": "Broccoli",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+21%"
+    },
+    {
+      "fdc_id": 169986,
+      "common_name": "Cauliflower",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+20%"
+    },
+    {
+      "fdc_id": 169229,
+      "common_name": "Eggplant",
+      "form": "cooked",
+      "quality_flags": "energy_vs_4-4-9_gap_+15%"
+    },
+    {
+      "fdc_id": 169261,
+      "common_name": "Okra",
+      "form": "cooked",
+      "quality_flags": "energy_vs_4-4-9_gap_+25%"
+    },
+    {
+      "fdc_id": 169260,
+      "common_name": "Okra",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+19%"
+    },
+    {
+      "fdc_id": 170416,
+      "common_name": "Parsley",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+23%"
+    },
+    {
+      "fdc_id": 173475,
+      "common_name": "Spearmint (fresh mint)",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+21%"
+    },
+    {
+      "fdc_id": 168463,
+      "common_name": "Spinach",
+      "form": "cooked",
+      "quality_flags": "energy_vs_4-4-9_gap_+27%"
+    },
+    {
+      "fdc_id": 168462,
+      "common_name": "Spinach",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+28%"
+    },
+    {
+      "fdc_id": 169999,
+      "common_name": "Sweet corn, yellow",
+      "form": "cooked",
+      "quality_flags": "energy_vs_4-4-9_gap_+16%"
+    },
+    {
+      "fdc_id": 169998,
+      "common_name": "Sweet corn, yellow",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+16%"
+    },
+    {
+      "fdc_id": 169251,
+      "common_name": "White mushrooms",
+      "form": "raw",
+      "quality_flags": "energy_vs_4-4-9_gap_+29%"
+    }
+  ]
+}

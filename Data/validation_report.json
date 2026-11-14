@@ -1,0 +1,32 @@
+{
+  "generated": "2026-11-12",
+  "status": "final",
+  "fdc": {
+    "dataset": "USDA FoodData Central, SR Legacy CSV release (April 2018)",
+    "official_download": "https://fdc.nal.usda.gov/download-datasets",
+    "obtained_from": {
+      "repo": "https://github.com/matiasmorant/nutrition",
+      "commit": "0b235d88512e017a4f78ada4f0e797218a14a7c4",
+      "folder": "USDA_FoodData_Central_sr_legacy_food/"
+    },
+    "cross_check": {
+      "repo": "https://github.com/HiathanNguyen/InfoChallenge",
+      "file": "FoodData_Central_sr_legacy_food_csv_2018-04/food_nutrient.csv",
+      "git_blob": "45590d9600a9716575ac43010842912baf25944f",
+      "identical": true
+    }
+  },
+  "off": {
+    "source": "https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv.gz",
+    "downloaded": "Wed Nov 11 08:56:56 PM UTC 2026",
+    "rows_read": 4906687,
+    "script_version": 2
+  },
+  "output_sha256": {
+    "data/fdc/fdc_food_nutrients_long.csv": "b58e8699d198a769a46ac711fc350a6b388a659352740121a55d285dcb9bff28",
+    "data/fdc/fdc_food_portions.csv": "408df8e51dfdbf613dc32981c5cd9127f41cf4f32a977d2256a90242c980b741",
+    "data/fdc/fdc_generic_foods.csv": "386f29626ca78ed99cd9be207b3be4a7fe3be70b69317215c33c919ee1f25661",
+    "data/merged/foods_and_products.csv": "9bbbb573de366c1d29d3e29acffe74cc28e78e92b9865723f09f9c73506508c5",
+    "data/off/off_packaged_products.csv": "616cfc65741baa5f94c944c126a0af68fcaf5a8e10ebfbb3efa33ed18fd38c28"
+  }
+}
