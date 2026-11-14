@@ -52,7 +52,7 @@ These are student research models: they do not give reliable nutrition values (s
 
 ## Results
 
-Full results, the scoring rules and the hand grades are in [`Results/SCOREBOARD.md`](https://docs.google.com/document/u/0/d/1ZMUM1n1eoJeuIc_ALxyxHPZf0dRCfVDKQT3Io-hCMyk/edit). For each model, the three versions were scored on the same 30 test questions in one `score.py` run on a Tesla T4.
+Full results, the scoring rules and the hand grades are in [`Results/SCOREBOARD.md`](Results/SCOREBOARD.md). For each model, the three versions were scored on the same 30 test questions in one `score.py` run on a Tesla T4.
 
 ### GPT-2 small (124M)
 
