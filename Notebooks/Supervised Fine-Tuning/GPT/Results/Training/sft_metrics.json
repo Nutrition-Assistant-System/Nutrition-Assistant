@@ -1,0 +1,36 @@
+{
+  "model_key": "gpt2-small",
+  "run_name": "sft_gpt2-small_20261113-1315",
+  "smoke_test": false,
+  "checkpoint_dir": "/content/drive/MyDrive/nutrition-sft/checkpoints/gpt2-small/sft",
+  "n_train": 806,
+  "n_val": 88,
+  "max_tokens_per_example": 94,
+  "learning_rate": 5e-05,
+  "batch_size": 8,
+  "epochs_planned": 3,
+  "epochs_run": 3,
+  "best_epoch": 3,
+  "stopped_early": false,
+  "eval_by_epoch": [
+    {
+      "epoch": 0.0,
+      "eval_loss": 2.9616386890411377
+    },
+    {
+      "epoch": 1.0,
+      "eval_loss": 0.642727255821228
+    },
+    {
+      "epoch": 2.0,
+      "eval_loss": 0.4832579791545868
+    },
+    {
+      "epoch": 3.0,
+      "eval_loss": 0.4715864360332489
+    }
+  ],
+  "heldout_perplexity": 8.46931663054123,
+  "val_samples_stopped_at_end": 8,
+  "val_samples": 8
+}
