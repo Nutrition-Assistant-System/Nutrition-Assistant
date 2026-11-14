@@ -1,0 +1,64 @@
+# All settings for Phase 2. Every script reads this file; change values here, not in code.
+seed: 42
+
+# Base model: "gpt2" (GPT-2 small, 124M, recommended) or "HuggingFaceTB/SmolLM2-135M"
+base_model: gpt2
+
+paths:
+  merged_items: data/raw/foods_and_products.csv   # merged USDA + Open Food Facts table (988 rows)
+  sft_handcheck: results/sft_handcheck_sample.csv  # 50 random pairs for the manual check
+  test_questions: tests/test_questions.csv
+  cpt_train: data/cpt/train.txt
+  cpt_heldout: data/cpt/heldout.txt
+  cpt_split_index: data/cpt/split_index.csv
+  sft_pairs: data/sft_pairs.jsonl
+  results_dir: results
+  # Checkpoints are NOT committed to Git. On Colab point this at Google Drive, e.g.
+  # /content/drive/MyDrive/nutrition-assistant/checkpoints
+  checkpoints_dir: checkpoints
+
+data:
+  heldout_fraction: 0.10        # share of CPT documents held out (split by document)
+  sft_target_pairs: 900         # 300-1000 required by the brief
+  sft_val_fraction: 0.10
+
+chat_template:
+  user: "<|user|>"
+  assistant: "<|assistant|>"
+  end: "<|end|>"
+
+cpt:
+  block_size: 512
+  epochs: 3
+  learning_rate: 5.0e-5
+  batch_size: 8
+  grad_accum: 1
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+  early_stopping_patience: 1    # stop when validation loss stops falling
+  eval_prompts:                 # same 5 prompts completed before and after CPT
+    - "Chicken breast, cooked, roasted. Per 100 g:"
+    - "Lentils, mature seeds, cooked, boiled. Per 100 g it contains"
+    - "Ingredients: whole grain oats, sugar,"
+    - "Breakfast cereal. Serving size: 30 g. Per 100 g:"
+    - "Greek yogurt, plain, nonfat. Per 100 g:"
+
+sft:
+  max_length: 384
+  epochs: 3
+  learning_rate: 5.0e-5
+  batch_size: 8
+  grad_accum: 1
+  warmup_ratio: 0.05
+  weight_decay: 0.01
+  early_stopping_patience: 1
+
+generation:                     # identical for all three models
+  max_new_tokens: 96
+  do_sample: false              # greedy decoding (temperature 0)
+  repetition_penalty: 1.0
+
+models:                         # the three versions scored by score.py
+  base: gpt2
+  cpt: checkpoints/cpt/best
+  sft: checkpoints/sft/best
