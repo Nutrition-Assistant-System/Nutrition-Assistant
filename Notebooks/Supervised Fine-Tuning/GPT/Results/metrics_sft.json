@@ -1,0 +1,26 @@
+{
+  "n_questions": 30,
+  "n_pending_manual": 8,
+  "accuracy": null,
+  "accuracy_provisional_auto_only": 13.6,
+  "n_auto_scored": 22,
+  "refusal_accuracy": 75.0,
+  "mean_latency_s": 0.313,
+  "by_difficulty_auto": {
+    "easy": 0.0,
+    "medium": 0.0,
+    "refusal": 100.0
+  },
+  "by_scoring_type_auto": {
+    "decline": 75.0,
+    "key_match": 0.0
+  },
+  "version": "+ SFT",
+  "checkpoint": "/content/drive/MyDrive/nutrition-sft/checkpoints/gpt2-small/sft/best",
+  "model_sha256": "4316197d9a1f03e2730b95396590293e0b3b75c58cc5a64f558a597564df3636",
+  "heldout_perplexity": 8.469,
+  "grader_agreement_pct": null,
+  "n_graded_by_both": 0,
+  "answers_stopped_at_stop_token": 30,
+  "mean_new_tokens": 28.0
+}
