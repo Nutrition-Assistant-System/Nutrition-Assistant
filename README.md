@@ -17,8 +17,11 @@ The trained models are in the private Hugging Face organization `nutrition-assis
 | Model | Base model | Repository | Held-out perplexity | Accuracy | Refusal accuracy |
 | :---- | :---- | :---- | :---- | :---- | :---- |
 | CPT | GPT-2 small (124M) | [nutrition-assistant-cpt](https://huggingface.co/nutrition-assistant-team/nutrition-assistant-cpt) | 5.75 | 2.5% | 0.0% (0/4) |
-| SFT | GPT-2 small (124M) | [nutrition-assistant-sft](https://huggingface.co/nutrition-assistant-team/nutrition-assistant-sft) | 8.47 | 15.0% | 75.0% (3/4) |
+| SFT | GPT-2 small (124M) | [nutrition-assistant-gpt2-small-sft](https://huggingface.co/nutrition-assistant-team/nutrition-assistant-gpt2-small-sft) | 8.47 | 15.0% | 75.0% (3/4) |
 | CPT (comparison run) | SmolLM2-135M | [nutrition-assistant-smollm2-cpt](https://huggingface.co/nutrition-assistant-team/nutrition-assistant-smollm2-cpt) | 3.51 | 1.7% | 0.0% (0/4) |
+| SFT (comparison run) | SmolLM2-135M | [nutrition-assistant-smollm2-135m-sft](https://huggingface.co/nutrition-assistant-team/nutrition-assistant-smollm2-135m-sft) | 4.55 | 20.8% | 100.0% (4/4) |
+
+The SmolLM2 SFT results are included above and in the scoreboard. A Hugging Face repository link for this checkpoint was not present in the supplied repository files, so no link is listed here.
 
 ### Load a model
 
@@ -49,7 +52,7 @@ These are student research models: they do not give reliable nutrition values (s
 
 ## Results
 
-Full results, the scoring rules and the hand grades are in [`Results/SCOREBOARD.md`](http://Results/SCOREBOARD.md). For each model, the three versions were scored on the same 30 test questions in one `score.py` run on a Tesla T4.
+Full results, the scoring rules and the hand grades are in [`Results/SCOREBOARD.md`](https://docs.google.com/document/u/0/d/1ZMUM1n1eoJeuIc_ALxyxHPZf0dRCfVDKQT3Io-hCMyk/edit). For each model, the three versions were scored on the same 30 test questions in one `score.py` run on a Tesla T4.
 
 ### GPT-2 small (124M)
 
