@@ -1,0 +1,26 @@
+{
+  "n_questions": 30,
+  "n_pending_manual": 8,
+  "accuracy": null,
+  "accuracy_provisional_auto_only": 18.2,
+  "n_auto_scored": 22,
+  "refusal_accuracy": 100.0,
+  "mean_latency_s": 1.118,
+  "by_difficulty_auto": {
+    "easy": 0.0,
+    "medium": 16.7,
+    "refusal": 100.0
+  },
+  "by_scoring_type_auto": {
+    "decline": 100.0,
+    "key_match": 0.0
+  },
+  "version": "+ SFT",
+  "checkpoint": "/content/drive/MyDrive/nutrition-smollm2/checkpoints/smollm2-135m/sft/best",
+  "model_sha256": "80dce02b39dc9c03ae2142b46101673cbc38fc09bdfb8a814ba8768011d262b7",
+  "heldout_perplexity": 4.554,
+  "grader_agreement_pct": null,
+  "n_graded_by_both": 0,
+  "answers_stopped_at_stop_token": 30,
+  "mean_new_tokens": 32.7
+}
