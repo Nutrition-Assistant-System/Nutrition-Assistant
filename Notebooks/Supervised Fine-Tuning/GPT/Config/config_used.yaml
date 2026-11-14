@@ -1,1 +1,298 @@
+project:
+  name: nutrition-food-label-assistant
+  course_phase: 2
+  config_version: 2
+  brief: 'Team Project - Phase 2: Train a Small Model and Evaluate It'
+run:
+  pipeline_model: gpt2-small
+  baseline_references: []
+  seed: 42
+  run_name: null
+  smoke_test:
+    enabled: false
+    data_fraction: 0.05
+    max_minutes: 10
+    test_questions: 5
+credentials:
+  source_order:
+  - colab_secrets
+  - environment
+  - prompt
+  secrets:
+    huggingface: HF_TOKEN
+    github: GITHUB_TOKEN
+runtime:
+  device: auto
+  expected_gpu: Tesla T4
+  inference_dtype_default: float32
+  training_precision: fp16_mixed
+  hf_cache_dir: null
+models:
+  gpt2-small:
+    model_id: openai-community/gpt2
+    revision: main
+    role: pipeline_candidate
+    params_m: 124
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 1024
+    tokenizer_notes: no pad token (use EOS); no chat template (add <|user|> <|assistant|>
+      <|end|> as special tokens at SFT)
+    train:
+      cpt_batch_size: 8
+      sft_batch_size: 8
+      grad_accum: 1
+      gradient_checkpointing: false
+  smollm2-135m:
+    model_id: HuggingFaceTB/SmolLM2-135M
+    revision: main
+    role: pipeline_candidate
+    params_m: 135
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 8192
+    tokenizer_notes: 49k vocabulary; set pad = EOS if missing; add the same 3 special
+      tokens at SFT
+    train:
+      cpt_batch_size: 8
+      sft_batch_size: 8
+      grad_accum: 1
+      gradient_checkpointing: false
+  smollm2-360m:
+    model_id: HuggingFaceTB/SmolLM2-360M
+    revision: main
+    role: baseline_reference
+    params_m: 362
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float32
+    max_context: 8192
+    tokenizer_notes: same tokenizer as smollm2-135m
+  qwen2.5-0.5b:
+    model_id: Qwen/Qwen2.5-0.5B
+    revision: main
+    role: baseline_reference
+    params_m: 494
+    family: base
+    prompt_style: project_template
+    gated: false
+    dtype: float16
+    max_context: 32768
+    tokenizer_notes: 151k vocabulary; different tokenizer from GPT-2
+  smollm2-135m-instruct:
+    model_id: HuggingFaceTB/SmolLM2-135M-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 135
+    family: instruct
+    prompt_style: native_chat
+    gated: false
+    dtype: float32
+    max_context: 8192
+    tokenizer_notes: uses its own chat template; not comparable as a 'base' model
+  qwen2.5-0.5b-instruct:
+    model_id: Qwen/Qwen2.5-0.5B-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 494
+    family: instruct
+    prompt_style: native_chat
+    gated: false
+    dtype: float16
+    max_context: 32768
+    tokenizer_notes: uses its own chat template
+  llama-3.2-1b-instruct:
+    model_id: meta-llama/Llama-3.2-1B-Instruct
+    revision: main
+    role: baseline_reference
+    params_m: 1236
+    family: instruct
+    prompt_style: native_chat
+    gated: true
+    dtype: float16
+    max_context: 131072
+    tokenizer_notes: uses its own chat template; needs HF_TOKEN and accepted licence
+prompting:
+  template: '<|user|> {question}
 
+    <|assistant|>'
+  target: ' {answer}<|end|>'
+  special_tokens:
+    user: <|user|>
+    assistant: <|assistant|>
+    end: <|end|>
+  add_special_tokens_at: project_tokenizer
+  project_tokenizer:
+    base_vocab_size: 50257
+    vocab_size: 50260
+    special_token_ids:
+      <|user|>: 50257
+      <|assistant|>: 50258
+      <|end|>: 50259
+    pad_token: <|endoftext|>
+    new_embedding_init: mean
+    tied_lm_head: true
+    saved_with_every_checkpoint: project_tokens.json
+  stop_token_ids_from:
+  - <|end|>
+  - <|endoftext|>
+  stop_strings:
+  - <|end|>
+  - <|user|>
+  - <|assistant|>
+  - <|endoftext|>
+  tokenize_with_add_special_tokens: false
+  system_prompt: null
+generation:
+  do_sample: false
+  max_new_tokens: 96
+  repetition_penalty: 1.0
+  batch_size: 1
+  latency: wall_clock_seconds_per_answer
+test_set:
+  repo_path: tests/test_questions.csv
+  n_questions: 30
+  fingerprint:
+    method: sha256_json_id_question_expected
+    value: 0ab302fef36a194853886f6b82e0177d3881a4c4ad122fc9c5d2a343fba769de
+  columns:
+  - id
+  - question
+  - expected_answer
+  - source
+  - difficulty
+  - key_answer
+  - should_decline
+  - scoring
+  difficulty_mix:
+    easy: 15
+    medium: 10
+    hard: 2
+    refusal: 3
+  scoring_mix:
+    key_match: 18
+    decline: 4
+    manual: 8
+  change_policy: fix clear mistakes only, note each change in the decision log, re-score
+    every model
+evaluation:
+  short_answers:
+    method: exact_match_on_key_value
+    normalize:
+    - lowercase
+    - collapse_spaces
+    - remove_thousands_separator
+    accept_alternatives: true
+    declined_answer_scores: 0
+  should_decline:
+    correct_if_declines: true
+    patterns:
+    - i don'?t have (that|this|the) information
+    - i can'?t help|i cannot help|i'?m not able to
+    - not in my (nutrition )?data|outside what i do|out of scope
+    - ask a (doctor|registered dietitian)|consult|i don'?t know
+  manual:
+    graders: 2
+    scale:
+      correct: 1.0
+      partly_correct: 0.5
+      wrong: 0.0
+    checklist:
+    - factual_accuracy
+    - numerical_accuracy
+    - answer_relevance
+    - groundedness
+    - refusal_accuracy
+    - units_and_serving_sizes
+    pending_until: both_graders_done
+    agreement: exact_match_of_the_two_scores
+    resolution: discuss_then_final_score
+  score_sources:
+  - auto
+  - human
+  metrics:
+    accuracy: mean final score over all 30; reported only when no grade is pending
+    accuracy_provisional: auto-scored questions only (22), clearly labelled; never
+      mixed with final
+    refusal_accuracy: declined / should-decline questions (4)
+    breakdowns:
+    - by_difficulty
+    - by_scoring_type
+    mean_latency_s: true
+    heldout_perplexity: computed in notebook 2 for the base model (before) and CPT
+      model (after); notebook 3 adds the SFT model
+    perplexity_vocab: original
+  error_analysis:
+    applies_to: sft
+    categories:
+    - format_failure
+    - hallucination
+    - knowledge_missing
+    - refusal_error
+    - test_case_problem
+paths:
+  drive_root: /content/drive/MyDrive/nutrition-sft
+  local_fallback_root: /content/nutrition-assistant
+  results_dir: '{root}/results/{stage}/{model_key}/{run_name}'
+  checkpoints_dir: '{root}/checkpoints/{model_key}'
+  repo_exports_dir: '{root}/repo_exports'
+  hf_hub_repo: null
+scoreboard:
+  file: SCOREBOARD.md
+  columns:
+  - Version
+  - Held-out perplexity
+  - Accuracy
+  - Refusal accuracy
+  - Avg. latency (s)
+  - Notes
+  required_rows:
+  - Small model, base
+  - + continued pretraining
+  - + SFT
+  reference_rows_label: Reference (base only, not trained)
+data_sources:
+  base_url: https://raw.githubusercontent.com/Nutrition-Assistant-System/Nutrition-Assistant/main
+  private_repo: false
+  merged_items: Data/foods_and_products.csv
+  cpt_train: Data/CPT/train.txt
+  cpt_heldout: Data/CPT/heldout.txt
+  sft_pairs: Data/SFT/sft_pairs.jsonl
+  test_questions: Data/test_questions.csv
+stages:
+  base: {}
+  cpt:
+    start_from: base_project
+    block_size: 512
+    collator: cpt_collate
+    epochs: 3
+    learning_rate: 5.0e-05
+    warmup_ratio: 0.05
+    weight_decay: 0.01
+    save_every_epoch: true
+    early_stopping_patience: 1
+    keep_best_by: eval_loss
+    eval_prompts:
+    - 'Chicken breast, cooked, roasted. Per 100 g:'
+    - Lentils, mature seeds, cooked, boiled. Per 100 g it contains
+    - 'Ingredients: whole grain oats, sugar,'
+    - 'Breakfast cereal. Serving size: 30 g. Per 100 g:'
+    - 'Greek yogurt, plain, nonfat. Per 100 g:'
+  sft:
+    start_from: cpt_best
+    method: full_fine_tuning
+    max_length: 384
+    epochs: 3
+    learning_rate: 5.0e-05
+    warmup_ratio: 0.05
+    weight_decay: 0.01
+    val_fraction: 0.1
+    early_stopping_patience: 1
+    loss_on_answers_only: true
+    add_special_tokens: false
+    on_too_long: error
